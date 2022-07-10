@@ -1,0 +1,8 @@
+package com.in28minutes.rest.webservices.restful.repo;
+
+import com.in28minutes.rest.webservices.restful.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleRepository extends JpaRepository<Role, Long> {
+  Role findByName(String username);
+}

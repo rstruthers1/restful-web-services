@@ -1,0 +1,36 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.in28minutes.rest.webservices' 
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//	implementation 'com.auth0:java-jwt:3.18.2'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+	
+	implementation 'org.bouncycastle:bcprov-jdk15on:1.6'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation 'com.google.guava:guava:28.2-jre'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
