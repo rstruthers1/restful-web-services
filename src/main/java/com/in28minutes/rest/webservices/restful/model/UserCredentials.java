@@ -44,6 +44,9 @@ public class UserCredentials {
       @JoinColumn(name="ROLE_ID", referencedColumnName="ID")
   )
   private List<Role> roles = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user")
+  private List<ToDo> toDos = new ArrayList<>();
   
   public List<String> getRoleNames() {
     List<String> roleNames = new ArrayList<>();
