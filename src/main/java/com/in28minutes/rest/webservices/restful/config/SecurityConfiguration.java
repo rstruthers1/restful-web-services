@@ -39,11 +39,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableGlobalMethodSecurity(
-    prePostEnabled = true,
-    securedEnabled = true,
-    jsr250Enabled = true)
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private final BcCryptWorkFactorService bcCryptWorkFactorService;
   private final DatabaseUserDetailsService databaseUserDetailsService;
@@ -57,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Value("${jwt.get.token.uri}")
   private String authenticationPath;
-  
+
 
   public SecurityConfiguration(
       BcCryptWorkFactorService bcCryptWorkFactorService,
@@ -68,70 +65,50 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     this.databaseUserDetailPasswordService = databaseUserDetailPasswordService;
   }
 
-  @Override
+    @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth
         .userDetailsService(databaseUserDetailsService)
         .passwordEncoder(passwordEncoder());
-  }
+    }
 
-  @Override
-  protected void configure(HttpSecurity httpSecurity) throws Exception {
-   
-    httpSecurity
-        .csrf().disable()
-        .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-        .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/icon/**").permitAll()
-        .antMatchers("/basicauth").permitAll()
-        .antMatchers("/registration").permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .httpBasic();
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+            .csrf().disable()
+            .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .authorizeRequests()
+            .anyRequest().authenticated();
 
-    httpSecurity
-        .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+       httpSecurity
+            .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        httpSecurity
+            .headers()
+            .frameOptions().sameOrigin()  //H2 Console Needs this setting
+            .cacheControl(); //disable caching
+    }
 
-    httpSecurity
-        .headers()
-        .frameOptions().sameOrigin()  //H2 Console Needs this setting
-        .cacheControl(); //disable caching
-    
-//    httpSecurity
-//        .csrf().disable()
-//        .authorizeRequests()
-//        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-//        .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/icon/**").permitAll()
-//        .antMatchers("/basicauth").permitAll()
-//        .antMatchers("/registration").permitAll()
-//        .anyRequest().authenticated()
-//        .and()
-//        .httpBasic();
-    
-    
-  }
-
-  @Override
-  public void configure(WebSecurity webSecurity) throws Exception {
-    webSecurity
-        .ignoring()
-        .antMatchers(
-            HttpMethod.POST,
-            authenticationPath
-        )
-        .antMatchers(HttpMethod.OPTIONS, "/**")
-        .and()
-        .ignoring()
-        .antMatchers(
-            HttpMethod.GET,
-            "/" //Other Stuff You want to Ignore
-        )
-        .and()
-        .ignoring()
-        .antMatchers("/h2-console/**/**");//Should not be in Production!
-  }
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        webSecurity
+            .ignoring()
+            .antMatchers(
+                HttpMethod.POST,
+                authenticationPath
+            )
+            .antMatchers(HttpMethod.OPTIONS, "/**")
+            .and()
+            .ignoring()
+            .antMatchers(
+                HttpMethod.GET,
+                "/" //Other Stuff You want to Ignore
+            )
+            .and()
+            .ignoring()
+            .antMatchers("/h2-console/**/**");//Should not be in Production!
+    }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -160,7 +137,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     provider.setUserDetailsPasswordService(this.databaseUserDetailPasswordService);
     provider.setUserDetailsService(this.databaseUserDetailsService);
     return provider;
-  }
+}
 
   @Bean
   @Override
