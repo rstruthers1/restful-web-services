@@ -46,11 +46,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private final DatabaseUserDetailsService databaseUserDetailsService;
   private final DatabaseUserDetailPasswordService databaseUserDetailPasswordService;
 
-  @Autowired
-  private JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint;
+  private final JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint;
 
-  @Autowired
-  private JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
+  private final JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
 
   @Value("${jwt.get.token.uri}")
   private String authenticationPath;
@@ -59,10 +57,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   public SecurityConfiguration(
       BcCryptWorkFactorService bcCryptWorkFactorService,
       DatabaseUserDetailsService databaseUserDetailsService,
-      DatabaseUserDetailPasswordService databaseUserDetailPasswordService) {
+      DatabaseUserDetailPasswordService databaseUserDetailPasswordService,
+      JwtUnAuthorizedResponseAuthenticationEntryPoint jwtUnAuthorizedResponseAuthenticationEntryPoint,
+      JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter) {
     this.bcCryptWorkFactorService = bcCryptWorkFactorService;
     this.databaseUserDetailsService = databaseUserDetailsService;
     this.databaseUserDetailPasswordService = databaseUserDetailPasswordService;
+    this.jwtUnAuthorizedResponseAuthenticationEntryPoint = jwtUnAuthorizedResponseAuthenticationEntryPoint;
+    this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
   }
 
     @Override
