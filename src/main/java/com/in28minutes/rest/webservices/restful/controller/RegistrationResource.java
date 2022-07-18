@@ -1,7 +1,7 @@
 package com.in28minutes.rest.webservices.restful.controller;
 
 
-import com.in28minutes.rest.webservices.restful.dto.UserCredentialsDto;
+import com.in28minutes.rest.webservices.restful.dto.UserCredentialsDTO;
 import com.in28minutes.rest.webservices.restful.model.Role;
 import com.in28minutes.rest.webservices.restful.model.UserCredentials;
 import com.in28minutes.rest.webservices.restful.repo.RoleRepository;
@@ -33,7 +33,7 @@ class RegistrationResource {
 
   @PostMapping("/registration")
   @ResponseStatus(code = HttpStatus.CREATED)
-  public void register(@RequestBody UserCredentialsDto userCredentialsDto) {
+  public void register(@RequestBody UserCredentialsDTO userCredentialsDto) {
     UserCredentials user =
         UserCredentials.builder()
             .enabled(true)
