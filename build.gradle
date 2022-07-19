@@ -19,6 +19,7 @@ dependencies {
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+	implementation 'org.modelmapper:modelmapper:3.1.0'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'mysql:mysql-connector-java'
