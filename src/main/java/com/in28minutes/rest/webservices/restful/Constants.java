@@ -1,7 +1,10 @@
 package com.in28minutes.rest.webservices.restful;
 
-import java.text.SimpleDateFormat;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constants {
-  public static final SimpleDateFormat TODO_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+  public static final String TODO_DATE_FORMAT = "yyyy-MM-dd";
+
 }

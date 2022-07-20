@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Configuration
@@ -18,14 +19,15 @@ public class ModelMapperConfig {
   @Bean
   public ModelMapper toDoModelToDTOMapper() {
     ModelMapper modelMapper = new ModelMapper();
+    SimpleDateFormat toDoDateFormatter = new SimpleDateFormat(Constants.TODO_DATE_FORMAT);
     Converter<Date, String> formatDate = ctx -> ctx.getSource() != null
-        ? Constants.TODO_DATE_FORMATTER.format(ctx.getSource())
+        ? toDoDateFormatter.format(ctx.getSource())
         : "";
     modelMapper.typeMap(ToDo.class, ToDoDTO.class)
         .addMappings(mapper -> mapper.using(formatDate).map(ToDo::getTargetDate, ToDoDTO::setTargetDate));
     return modelMapper;
   }
-  
+
   @Bean
   public ModelMapper userCredentialsModelToDTOMapper() {
     ModelMapper modelMapper = new ModelMapper();
@@ -36,5 +38,4 @@ public class ModelMapperConfig {
   }
 
 
-  
 }

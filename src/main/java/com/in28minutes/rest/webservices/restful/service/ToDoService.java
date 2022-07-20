@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,10 +43,11 @@ public class ToDoService {
 
   public ToDoDTO createForUser(String username, ToDoDTO toDoDTO) throws ParseException {
     UserCredentials user = userRepository.findByUsername(username);
+    SimpleDateFormat toDoDateFormatter = new SimpleDateFormat(Constants.TODO_DATE_FORMAT);
     ToDo toDo = ToDo.builder()
         .description(toDoDTO.getDescription())
         .done(toDoDTO.getDone())
-        .targetDate(Constants.TODO_DATE_FORMATTER.parse(toDoDTO.getTargetDate()))
+        .targetDate(toDoDateFormatter.parse(toDoDTO.getTargetDate()))
         .build();
 
     toDo.setUser(user);
@@ -92,7 +94,8 @@ public class ToDoService {
     }
     toDo.setDescription(toDoDTO.getDescription());
     toDo.setDone(toDoDTO.getDone());
-    toDo.setTargetDate(Constants.TODO_DATE_FORMATTER.parse(toDoDTO.getTargetDate()));
+    SimpleDateFormat toDoDateFormatter = new SimpleDateFormat(Constants.TODO_DATE_FORMAT);
+    toDo.setTargetDate(toDoDateFormatter.parse(toDoDTO.getTargetDate()));
     toDoRepository.save(toDo);
     return toDoModelToDTOMapper.map(toDo, ToDoDTO.class);
   }
