@@ -18,11 +18,9 @@ import io.jsonwebtoken.impl.DefaultClock;
 
 @Component
 public class JwtTokenUtil implements Serializable {
-
-  static final String CLAIM_KEY_USERNAME = "sub";
-  static final String CLAIM_KEY_CREATED = "iat";
+  
   private static final long serialVersionUID = -3301605591108950415L;
-  private transient Clock clock = DefaultClock.INSTANCE;
+  private static final transient Clock clock = DefaultClock.INSTANCE;
 
   @Value("${jwt.signing.key.secret}")
   private String secret;
@@ -56,11 +54,6 @@ public class JwtTokenUtil implements Serializable {
     return expirationDateFromToken.before(clock.now());
   }
 
-  private boolean ignoreTokenExpiration(String token) {
-    // here you specify tokens, for that the expiration is ignored
-    return false;
-  }
-
   public String generateToken(UserDetails userDetails) {
     Map<String, Object> claims = new HashMap<>();
     return doGenerateToken(claims, userDetails.getUsername());
@@ -75,7 +68,7 @@ public class JwtTokenUtil implements Serializable {
   }
 
   public boolean canTokenBeRefreshed(String token) {
-    return (!isTokenExpired(token) || ignoreTokenExpiration(token));
+    return (!isTokenExpired(token));
   }
 
   public String refreshToken(String token) {
