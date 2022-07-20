@@ -1,6 +1,7 @@
 package com.in28minutes.rest.webservices.restful.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "ROLE")
 public class Role {
   @Id

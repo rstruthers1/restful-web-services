@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class UserCredentialsDTO {
+public class RoleDTO {
   @EqualsAndHashCode.Include
   private Long id;
-  private String firstName;
-  private String lastName;
-  private String username;
-  private String password;
-  private  Boolean enabled;
+  private String name;
 }
